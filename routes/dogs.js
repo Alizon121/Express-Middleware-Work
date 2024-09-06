@@ -84,4 +84,12 @@ const deleteDog = (req, res) => {
 
 // ------------------------------  ROUTER ------------------------------  
 
-// Your code here 
+router.get("/dogs", getAllDogs)
+
+router.get("/dogs/:dogId", getDogById)
+
+router.post("/dogs", createDog)
+
+router.put("/dogs/:dogId", updateDog)
+
+router.delete("/dogs/:dogId", deleteDog)
