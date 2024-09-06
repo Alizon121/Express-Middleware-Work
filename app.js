@@ -33,5 +33,20 @@ app.get('/test-error', async (req, res) => {
   throw new Error("Hello World!")
 });
 
+// Middlware for throwing error 
+app.use((req, res, next) => {
+  const error = new Error("The requested resource couldn't be found.")
+  error.statusCode = 404
+  next(error)
+})
+
+// Middleware for error handling
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500
+  res.status(statusCode).json({
+    Error: err.message
+  })
+})
+
 const port = 5000;
 app.listen(port, () => console.log('Server is listening on port', port));
