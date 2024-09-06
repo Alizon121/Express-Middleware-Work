@@ -5,8 +5,15 @@ const errorHandler = require('express-async-errors')
 
 
 // Middleware function for logging method and URL path of the request
+const logRequest = (req, res, next) => {
+  console.log(`Method: ${req.method}, URL: ${req.url}`)
+  res.on("finish", () => {
+    console.log(res.statusCode)
+  })
+  next()
+}
 
-
+app.use(logRequest)
 
 // For testing purposes, GET /
 app.get('/', (req, res) => {
