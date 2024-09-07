@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const dogs = require('./routes/dogs')
+const dogRouter = require('./routes/dogs')
 app.use(express.json())
 const errorHandler = require('express-async-errors')
 
@@ -13,11 +13,10 @@ const logRequest = (req, res, next) => {
   })
   next()
 }
-
 app.use(logRequest)
 
 // Add the dog router
-app.use("/dogs", dogs)
+app.use("/dogs", dogRouter)
 
 // For testing purposes, GET /
 app.get('/', (req, res) => {
