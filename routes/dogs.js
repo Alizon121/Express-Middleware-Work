@@ -1,8 +1,11 @@
 // ------------------------------  SERVER DATA ------------------------------  
 const express = require('express');
-// const app = express()
+const dogsFoodRouter = require("./dog-foods")
 const router = express.Router()
-// app.use(express.json())
+
+
+// Add router
+router.use("/", dogsFoodRouter)
 
 let nextDogId = 1;
 function getNewDogId() {

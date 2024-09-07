@@ -1,4 +1,6 @@
 // ------------------------------  SERVER DATA ------------------------------  
+const express = require('express')
+const router = express.Router({ mergeParams: true})
 
 let nextFoodId = 1;
 function getNewFoodId() {
@@ -36,11 +38,30 @@ const validateFoodInfo = (req, res, next) => {
   next();
 };
 
+// const validateDogId = (req, res, next) => {
+//   const { dogId } = req.params;
+//   const dog = dogs.find(dog => dog.dogId == dogId);
+//   if (!dog) {
+//     const err = new Error("Couldn't find dog with that dogId")
+//     err.statusCode = 404;
+//     throw err;
+//     // return next(err); // alternative to throwing it
+//   }
+//   next();
+// }
+
 // ------------------------------  ROUTE HANDLERS ------------------------------  
 
 // GET /dogs/:dogId/foods
-const getFoodsByDogId = (req, res) => {
+const getFoodsByDogId = (req, res, next) => {
   const { dogId } = req.params;
+
+  // Add logic to make an error
+  if (!dogId) {
+    const error = new Error("Dog not found")
+    err.statusCode = 404
+    next(error)
+  }
   res.json(foods.filter(food => food.dogId == dogId));
 };
 
@@ -59,4 +80,10 @@ const createFood = (req, res) => {
 
 // ------------------------------  ROUTER ------------------------------  
 
-// Your code here 
+// Your code here
+router.get("/:dogId/foods", validateDogId, getFoodsByDogId)
+
+router.post("/:dogId/foods", validateFoodInfo, createFood)
+
+
+module.exports = router
