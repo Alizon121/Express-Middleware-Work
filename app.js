@@ -15,6 +15,7 @@ const logRequest = (req, res, next) => {
 }
 app.use(logRequest)
 
+
 // Add the dog router
 app.use("/dogs", dogRouter)
 
@@ -36,18 +37,29 @@ app.get('/test-error', async (req, res) => {
   throw new Error("Hello World!")
 });
 
-// Middlware for throwing error 
+// Middlware for throwing error (Phase 2)
 app.use((req, res, next) => {
   const error = new Error("The requested resource couldn't be found.")
   error.statusCode = 404
   next(error)
 })
 
-// Middleware for error handling
+// Middleware for error handling unknown method/route (Phase 2)
+// app.use((err, req, res, next) => {
+//   const statusCode = err.statusCode || 500
+//   res.status(statusCode).json({
+//     Error: err.message
+//   })
+// })
+
+// Error Handling Middleware (Phase 4)
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
+  console.error(err)
   res.status(statusCode).json({
-    Error: err.message
+    message: err.message || "Something went wrong",
+    statusCode: statusCode,
+    stack: err.stack
   })
 })
 

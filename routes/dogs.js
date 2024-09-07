@@ -52,9 +52,16 @@ const getAllDogs = (req, res) => {
 };
 
 // GET /dogs/:dogId
-const getDogById = (req, res) => {
+const getDogById = (req, res, next) => {
   const { dogId } = req.params;
   const dog = dogs.find(dog => dog.dogId == dogId);
+  
+  // Added logic to handle no dog -ASL
+  if (!dog) {
+    const error = new Error("Dog not found")
+       error.statusCode = 404
+    next(error)
+  }
   res.json(dog);
 }
 
