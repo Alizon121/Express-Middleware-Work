@@ -1,3 +1,4 @@
+require("dotenv").config() // 
 const express = require('express');
 const app = express();
 const dogRouter = require('./routes/dogs')
@@ -50,18 +51,26 @@ app.use((req, res, next) => {
 //   res.status(statusCode).json({
 //     Error: err.message
 //   })
-// })
+// })`
 
 // Error Handling Middleware (Phase 4)
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500
   console.error(err)
+  if (process.env.NODE_ENV !== "production") {
   res.status(statusCode).json({
     message: err.message || "Something went wrong",
     statusCode: statusCode,
     stack: err.stack
   })
+} else {
+  res.json({
+    message: err.message || "Something went wrong",
+    statusCode: statusCode
+  })
+}
 })
 
-const port = 5000;
+const port = process.env.PORT || 8000
+// const port = 5000;
 app.listen(port, () => console.log('Server is listening on port', port));
